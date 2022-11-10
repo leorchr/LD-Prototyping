@@ -10,6 +10,7 @@ public class PlayerController : MonoBehaviour
     public float jumpForce = 2.0f;
     public bool isGrounded = false;
     public bool doubleCount = false;
+    public Camera cmr;
     private void Start()
     {
         RB = GetComponent<Rigidbody>();
@@ -48,16 +49,17 @@ public class PlayerController : MonoBehaviour
         {
             GetComponent<Animator>().SetBool("Run", false);
         }
-        if (transform.position.y <= -10)
+    }
+
+    void OnCollisionEnter(Collision collision)
+    {
+        isGrounded = true;
+        if (collision.gameObject.tag == "Terrain")
         {
             transform.position = new Vector3(-5, 2, 0);
             RB.velocity = Vector3.zero;
+            cmr.transform.position = new Vector3(-5, 3, -8);
         }
-    }
-
-    void OnCollisionEnter(Collision collider)
-    {
-        isGrounded = true;
     }
 
 }
