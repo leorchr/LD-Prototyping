@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using TreeEditor;
 using UnityEditor;
 using UnityEngine;
 
@@ -11,9 +12,12 @@ public class PlayerController : MonoBehaviour
     public bool isGrounded = false;
     public bool doubleCount = false;
     public Camera cmr;
+    public Vector3 playerPosition;
     private void Start()
     {
         RB = GetComponent<Rigidbody>();
+        playerPosition = transform.position;
+
     }
 
     void Update()
@@ -36,14 +40,12 @@ public class PlayerController : MonoBehaviour
         {
             GetComponent<Animator>().SetBool("Run", true);
             transform.position += new Vector3(speed*Time.deltaTime, 0, 0);
-            transform.localRotation = Quaternion.Euler(0, 90, 0);
         }
 
         else if (Input.GetKey("a") || Input.GetKey(KeyCode.LeftArrow))
         {
             GetComponent<Animator>().SetBool("Run", true);
             transform.position += new Vector3(-speed * Time.deltaTime, 0, 0);
-            transform.localRotation = Quaternion.Euler(0, 270, 0);
         }
         else
         {
@@ -56,10 +58,21 @@ public class PlayerController : MonoBehaviour
         isGrounded = true;
         if (collision.gameObject.tag == "Terrain")
         {
-            transform.position = new Vector3(-5, 2, 0);
+            transform.position = playerPosition;
             RB.velocity = Vector3.zero;
-            cmr.transform.position = new Vector3(-5, 3, -8);
+            cmr.transform.localPosition = new Vector3(11.42857f, -0.942857f, 0);
         }
     }
 
+    void OnTriggerEnter(Collider collision)
+    {
+        if (collision.gameObject.tag == "Respawn")
+        {
+            transform.position += new Vector3(6, 0, 0);
+            transform.position = new Vector3(transform.position.x, 5, 0);
+            playerPosition = transform.position;
+            RB.velocity = Vector3.zero;
+            cmr.transform.localPosition = new Vector3(11.42857f, 1, 0);
+        }
+    }
 }
