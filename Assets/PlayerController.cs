@@ -68,7 +68,7 @@ public class PlayerController : MonoBehaviour
     {
         if (collision.gameObject.tag == "Respawn")
         {
-            transform.position += new Vector3(6, 0, 0);
+            transform.position += new Vector3(3, 0, 0);
             transform.position = new Vector3(transform.position.x, 5, 0);
             playerPosition = transform.position;
             RB.velocity = Vector3.zero;
